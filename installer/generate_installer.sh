@@ -8,7 +8,7 @@ DOCKER_MULTIARCH_IMAGES=("$DOCKER_ZEEK_IMAGE")
 
 # Store the absolute path of the script's dir and switch to the top dir
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-pushd "$SCRIPT_DIR" > /dev/null
+pushd "$SCRIPT_DIR/.." > /dev/null
 
 __help() {
   cat <<HEREDOC
@@ -109,17 +109,6 @@ echo "${BASH_REMATCH[1]}" > "$STAGE_DIR/VERSION"
 wget -O "$STAGE_DIR/scripts/zeek" \
     https://raw.githubusercontent.com/activecm/docker-zeek/master/zeek
 chmod +x "$STAGE_DIR"/scripts/zeek
-
-# Copy in the zeek_log_transport install scripts from other repos
-echo "Fetching external resources..."
-wget -O "$STAGE_DIR/scripts/zeek_log_transport.sh" \
-    https://raw.githubusercontent.com/activecm/zeek-log-transport/master/zeek_log_transport.sh
-chmod +x "$STAGE_DIR"/scripts/zeek_log_transport.sh
-
-# TODO: change link to master
-wget -O "$STAGE_DIR/scripts/install_data_import.sh" \
-    https://raw.githubusercontent.com/activecm/zeek-log-transport/add-install-script/install_data_import.sh
-chmod +x "$STAGE_DIR"/scripts/install_data_import.sh
 
 # Copy in zeek-open-connections zeek script
 wget -O "$STAGE_DIR/zeek_scripts/site/zeek_open_connections.zeek" \

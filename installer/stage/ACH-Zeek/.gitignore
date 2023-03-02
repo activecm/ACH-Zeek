@@ -2,12 +2,6 @@
 *.tar.gz
 *.tar
 
-# These scripts are tracked in the zeek-log-transport repo.
-# We download them into the staging directory,
-# but do not want to commit them here.
-scripts/install_data_import.sh
-scripts/zeek_log_transport.sh
-
 # These scripts are tracked in the docker-zeek repo.
 scripts/zeek
 
