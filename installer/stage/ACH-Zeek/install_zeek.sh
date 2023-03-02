@@ -40,9 +40,12 @@ normalize_environment
 
 print_usage_text () {
     cat >&2 <<EOHELP
-This script will install Zeek.
+This script will install Zeek. If the --sensor flag is passed to the script,
+Zeek will be set up to monitor a network interface as a service. Otherwise,
+Zeek will be set up to process packet captures with the "zeek readpcap" command.
+
 On the command line, enter:
-$0
+$0 [--sensor]
 EOHELP
 }
 
@@ -52,6 +55,22 @@ parse_parameters () {
         print_usage_text
         exit 0
     fi
+
+    while [[ $# -gt 0 ]]; do
+        case $1 in
+            -h|help|--help)
+                # Display help and exit
+                print_usage_text
+                exit 0
+                ;;
+            --sensor)
+                _SETUP_SENSOR=true
+                ;;
+            *)
+                ;;
+        esac
+        shift
+    done
 }
 
 test_system () {
@@ -232,21 +251,25 @@ install_zeek () {
         $SUDO cp zeek_scripts/100-default.zeek /opt/zeek/share/zeek/site/autoload/100-default.zeek
     fi
 
-    # Ensure all the config files and directories are present
-    source /opt/zeek/bin/zeek
-    init_zeek_cfg
-
     # Copy over any missing Zeek scripts into the autoload directory
     # -n prevents copying if the target file exists
     $SUDO cp -rn zeek_scripts/site/* /opt/zeek/share/zeek/site/
 
-    # Start the container
-    /opt/zeek/bin/zeek start
+    if [ "$_SETUP_SENSOR" = "true" ]; then
+        status "Starting Zeek as a network monitor"
+        /opt/zeek/bin/zeek start
 
-    status "Waiting for initialization"
-    sleep 15
+        status "Waiting for initialization"
+        sleep 15
 
-    require_zeek_container_running
+        require_zeek_container_running
+    else
+        status "Displaying 'zeek readpcap' help text"
+        /opt/zeek/bin/zeek readpcap >&2
+        if [ $? -ne 0 ]; then
+            fail "An error occurred while starting Zeek"
+        fi
+    fi
 
     echo2 "Congratulations, Zeek is installed."
 }
