@@ -36,21 +36,13 @@ normalize_environment
 
 #### Script Constants
 
-#### Init State
-# These variables could be sourced from a configuration script
-# in order to support unattended installation.
-
-ach_ip="$ach_ip"
-
-#### Working State
-
 #### Main Logic
 
 print_usage_text () {
     cat >&2 <<EOHELP
-This script will install Zeek and set up routine data transfers to AC-Hunter.
+This script will install Zeek.
 On the command line, enter:
-$0 [ip.address.for.achunter]
+$0
 EOHELP
 }
 
@@ -278,12 +270,6 @@ main () {
     install_docker
 
     install_zeek
-
-    if [ "$acm_no_interactive" != 'yes' ]; then
-        scripts/install_data_import.sh Zeek $ach_ip
-    else
-        status "Not running install_data_import as this is an upgrade and data_import has already been installed."
-    fi
 
     old_version_cleanup
 }
