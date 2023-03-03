@@ -141,7 +141,6 @@ check_for_unmanaged_zeek () {
 }
 
 old_version_cleanup () {
-    require_zeek_container_running
     status "Cleaning up old files"
 
     if [ "$acm_no_interactive" != 'yes' ]; then
