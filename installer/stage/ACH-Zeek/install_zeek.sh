@@ -263,12 +263,6 @@ install_zeek () {
         sleep 15
 
         require_zeek_container_running
-    else
-        status "Displaying 'zeek readpcap' help text"
-        /opt/zeek/bin/zeek readpcap >&2
-        if [ $? -ne 0 ]; then
-            fail "An error occurred while starting Zeek"
-        fi
     fi
 
     echo2 "Congratulations, Zeek is installed."
