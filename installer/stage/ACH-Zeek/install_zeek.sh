@@ -176,7 +176,7 @@ old_version_cleanup () {
 
 install_docker () {
     status "Installing docker"
-    $SUDO scripts/shell-lib/docker/install_docker.sh
+    scripts/shell-lib/docker/install_docker.sh
     echo2 ''
     if $SUDO docker ps &>/dev/null ; then
         echo2 'Docker appears to be working, continuing.'
