@@ -3,7 +3,7 @@
 set -e
 
 # This is exported in the deployment. Only one multi-arch image may be saved to a single archive.
-DOCKER_ZEEK_IMAGE="activecm/zeek:4.2.1"
+DOCKER_ZEEK_IMAGE="activecm/zeek:4.2.0"
 DOCKER_MULTIARCH_IMAGES=("$DOCKER_ZEEK_IMAGE")
 
 # Store the absolute path of the script's dir and switch to the top dir
