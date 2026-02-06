@@ -3,7 +3,7 @@
 set -e
 
 # This is exported in the deployment. Only one multi-arch image may be saved to a single archive.
-DOCKER_ZEEK_IMAGE="activecm/zeek:4.2.0"
+DOCKER_ZEEK_IMAGE="activecm/zeek:4.2.1"
 DOCKER_MULTIARCH_IMAGES=("$DOCKER_ZEEK_IMAGE")
 
 # Store the absolute path of the script's dir and switch to the top dir
@@ -50,22 +50,12 @@ shell-lib/docker/check_docker.sh || {
         echo -e "\e[93mWARNING\e[0m: The generator did not detect a supported version of Docker."
         echo "         A supported version of Docker can be installed by running"
         echo "         the install_docker.sh script in the scripts directory."
-
-        echo
-        echo -n "Press enter to continue..."
-        read
-        echo
 }
 
 shell-lib/docker/check_docker-compose.sh || {
         echo -e "\e[93mWARNING\e[0m: The generator did not detect a supported version of Docker-Compose."
         echo "         A supported version of Docker-Compose can be installed by running"
         echo "         the install_docker.sh script in the scripts directory."
-
-        echo
-        echo -n "Press enter to continue..."
-        read
-        echo
 }
 
 # If the current user doesn't have docker permissions run with sudo
