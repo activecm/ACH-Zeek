@@ -2,9 +2,6 @@
 *.tar.gz
 *.tar
 
-# These scripts are tracked in the docker-zeek repo.
-scripts/zeek
-
 # These scripts are tracked in separate Zeek package repos.
 zeek_scripts/site/zeek_open_connections.zeek
 
