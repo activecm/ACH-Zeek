@@ -95,7 +95,7 @@ echo "Updating VERSION file..."
 [[ "$DOCKER_ZEEK_IMAGE" =~ :(.*)$ ]]
 echo "${BASH_REMATCH[1]}" > "$STAGE_DIR/VERSION"
 
-# The zeek wrapper script is included in the repo (originally from https://github.com/activecm/docker-zeek)
+# The zeek wrapper script is included in the repo
 chmod +x "$STAGE_DIR"/scripts/zeek
 
 # Copy in zeek-open-connections zeek script

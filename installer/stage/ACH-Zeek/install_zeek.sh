@@ -207,10 +207,7 @@ install_zeek () {
     $SUDO chmod 0755 /opt/zeek/bin/zeek
     $SUDO ln -sf /opt/zeek/bin/zeek /usr/local/bin/zeek
 
-    # https://github.com/activecm/docker-zeek/blob/master/zeek
-    # uses these variables for configuration. Set the AC-Hunter specific
-    # values here to ensure we aren't dependent on defaults in an external
-    # script which could change in future versions
+    # The zeek wrapper script uses these environment variables for configuration.
     # Note: The HEREDOC block must be indented using tabs.
     cat <<- HEREDOC | $SUDO tee /etc/profile.d/docker-zeek.sh >/dev/null
 		# This file is auto-generated. Any changes will be overwritten on next upgrade.
