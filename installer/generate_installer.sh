@@ -68,7 +68,7 @@ fi
 for DOCKER_MULTIARCH_IMAGE in "${DOCKER_MULTIARCH_IMAGES[@]}"; do 
 
   DOCKER_MULTIARCH_IMAGE_ARCHITECTURES=(`
-    ${SUDO} docker run --rm -i -u "$(id -u)":"$(id -g)" quay.io/containers/skopeo:latest \
+    ${SUDO} docker run --rm -i -u "$(id -u)":"$(id -g)" quay.io/containers/skopeo:v1.21.0 \
     inspect --raw docker://docker.io/${DOCKER_MULTIARCH_IMAGE} | \
     grep "architecture" | cut -d: -f2 | cut -d\" -f2`)
 
@@ -82,7 +82,7 @@ for DOCKER_MULTIARCH_IMAGE in "${DOCKER_MULTIARCH_IMAGES[@]}"; do
       echo "The latest images will be pulled from DockerHub for ${DOCKER_MULTIARCH_IMAGE_NAME}."
       mkdir -p "${STAGE_DIR}/${DOCKER_MULTIARCH_IMAGE_OUT_DIR}"
 
-      $SUDO docker run --rm -i -v "${STAGE_DIR}/${DOCKER_MULTIARCH_IMAGE_OUT_DIR}":/host -u "$(id -u)":"$(id -g)" quay.io/containers/skopeo:latest \
+      $SUDO docker run --rm -i -v "${STAGE_DIR}/${DOCKER_MULTIARCH_IMAGE_OUT_DIR}":/host -u "$(id -u)":"$(id -g)" quay.io/containers/skopeo:v1.21.0 \
         --override-arch ${DOCKER_MULTIARCH_IMAGE_ARCH} copy --multi-arch system docker://docker.io/${DOCKER_MULTIARCH_IMAGE} \
         --additional-tag ${DOCKER_MULTIARCH_IMAGE} \
         docker-archive:/host/"${DOCKER_MULTIARCH_IMAGE_NAME}"
@@ -95,9 +95,7 @@ echo "Updating VERSION file..."
 [[ "$DOCKER_ZEEK_IMAGE" =~ :(.*)$ ]]
 echo "${BASH_REMATCH[1]}" > "$STAGE_DIR/VERSION"
 
-# Copy in the zeek script which runs the docker image
-wget -O "$STAGE_DIR/scripts/zeek" \
-    https://raw.githubusercontent.com/activecm/docker-zeek/master/zeek
+# The zeek wrapper script is included in the repo
 chmod +x "$STAGE_DIR"/scripts/zeek
 
 # Copy in zeek-open-connections zeek script
