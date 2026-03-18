@@ -1,17 +1,19 @@
 name: Generate and upload a release assets
 
-on: push
+on:
+  push:
+    tags:
+      - '*'
 
 jobs:
   upload:
-    if: startsWith(github.ref, 'refs/tags/')
     name: Upload Artifacts
     runs-on: ubuntu-22.04
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - run: shell-lib/docker/install_docker.sh
       - run: installer/generate_installer.sh
-      - uses: softprops/action-gh-release@v1
+      - uses: softprops/action-gh-release@v2
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:

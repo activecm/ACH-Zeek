@@ -30,7 +30,7 @@ fi
 MIN_VERSION_MAJOR=2
 MIN_VERSION_MINOR=0
 MAX_VERSION_MAJOR=2
-MAX_VERSION_MINOR=17
+MAX_VERSION_MINOR=99
 
 pushd "$(dirname "${BASH_SOURCE[0]}")" > /dev/null
 source ../acmlib.sh
