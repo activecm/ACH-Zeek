@@ -78,7 +78,7 @@ init_zeek_cfg() {
 	# skip in readpcap mode or if it already exists
 	if [ "$1" != "readpcap" ] && [ ! -s "$HOST_ZEEK/etc/node.cfg" ]; then
 		echo "Could not find ${HOST_ZEEK}/etc/node.cfg. Generating one now." >&2
-		$SUDO docker exec "$container" zeekcfg -o "/zeek/etc/node.cfg" --type afpacket --processes 0 --no-pin
+		$SUDO docker exec -it "$container" zeekcfg -o "/zeek/etc/node.cfg" --type afpacket --processes 0 --no-pin
 	fi
 }
 
@@ -184,7 +184,7 @@ main() {
 		;;
 
 	stop)
-		if [ "$running" = "true" ]; then
+		if [ "$running" != "false" ]; then
 			echo "Stopping the Zeek docker container" >&2
 			$SUDO docker stop -t 90 "$container" >&2
 		else
@@ -275,9 +275,9 @@ main() {
 
 	enable)
 		echo "Enabling Zeek docker container on future boots" >&2
-		if [ "$running" != "true" ]; then
+		if [ "$running" = "false" ]; then
 			echo "Zeek is stopped - please start first to set restart policy." >&2
-			exit 1
+			exit 0
 		fi
 
 		$SUDO docker update --restart always "${container}" >&2
@@ -285,9 +285,9 @@ main() {
 
 	disable)
 		echo "Blocking Zeek docker container from starting on future boots" >&2
-		if [ "$running" != "true" ]; then
+		if [ "$running" = "false" ]; then
 			echo "Zeek is stopped - please start first to set restart policy." >&2
-			exit 1
+			exit 0
 		fi
 
 		$SUDO docker update --restart no "$container" >&2
